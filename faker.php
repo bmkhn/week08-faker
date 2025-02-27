@@ -20,7 +20,7 @@ $faker = Faker\Factory::create('en_PH');
 
 
 // Generate Office Data [50]            NEEDS TO BE FIRST BECAUSE OF FK CONSTRAINT
-$stmt1 = $connection->prepare("INSERT INTO Office (name, contactnum, email, address, city, country, postal) VALUES (?, ?, ?, ?, ?, ?, ?)");
+$stmt = $connection->prepare("INSERT INTO Office (name, contactnum, email, address, city, country, postal) VALUES (?, ?, ?, ?, ?, ?, ?)");
 for ($i = 0; $i < 50; $i++) {
     $name = $faker->company;
     $contactnum = $faker->phoneNumber;
@@ -30,28 +30,43 @@ for ($i = 0; $i < 50; $i++) {
     $country = 'Philippines';
     $postal = $faker->postcode;
 
-    $stmt1->bind_param("sssssss", $name, $contactnum, $email, $address, $city, $country, $postal);
-    $stmt1->execute();
+    $stmt->bind_param("sssssss", $name, $contactnum, $email, $address, $city, $country, $postal);
+    $stmt->execute();
 }
 echo "Office Data Generated!<br>";
 
 
-// Generate Employee Data [200]
-$stmt2 = $connection->prepare("INSERT INTO Employee (lastname, firstname, office_id, address) VALUES (?, ?, ?, ?)");
+// Generate Employee Data [200]         FK USED: office_id
+$stmt = $connection->prepare("INSERT INTO Employee (lastname, firstname, office_id, address) VALUES (?, ?, ?, ?)");
 for ($i = 0; $i < 200; $i++) {
     $lastname = $faker->lastName;
     $firstname = $faker->firstName;
-    $office_id = $faker->numberBetween(1, 50); // FK
+    $office_id = $faker->numberBetween(1, 50);          // FK
     $address = $faker->address;
 
-    $stmt2->bind_param("ssis", $lastname, $firstname, $office_id, $address);
-    $stmt2->execute();
+    $stmt->bind_param("ssis", $lastname, $firstname, $office_id, $address);
+    $stmt->execute();
 }
-echo "Employee Data Generated!\n";
+echo "Employee Data Generated!<br>";
 
 
-// Generate Transaction Data [500]
-for ($i = 0; $i < 500; $i++){
-    // Code here
+// Generate Transaction Data [500]      FK USED: employee_id, office_id
+$stmt = $connection->prepare("INSERT INTO Transaction (employee_id, office_id, datelog, action, remarks, documentcode) VALUES (?, ?, ?, ?, ?, ?)");
+for ($i = 0; $i < 500; $i++) {
+    $employee_id = $faker->numberBetween(1, 200);       // FK
+    $office_id = $faker->numberBetween(1, 50);          // FK
+    $datelog = $faker->dateTimeBetween('-10 years', 'now')->format('Y-m-d H:i:s');  // Min: 10 years ago and Max: now
+    $action = $faker->word;
+    $remarks = $faker->words(3, true);  // 3 words, concatenated
+    $documentcode = $faker->uuid;
+
+    $stmt->bind_param("iissss", $employee_id, $office_id, $datelog, $action, $remarks, $documentcode);
+    $stmt->execute();
 }
+echo "Transaction Data Generated!<br>";
+
+
+// Close Connection
+$stmt->close();
+$connection->close();
 ?>
