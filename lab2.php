@@ -10,7 +10,7 @@ for ($i = 0; $i < 15; $i++) {
         'title' => $faker->words(3, true),
         'author' => $faker->name,
         'genre' => $genres[array_rand($genres)],
-        'publication_year' => $faker->dateTimeBetween('-2 years', 'now')->format('Y'),
+        'publication_year' => $faker->numberBetween(1900, 2024),
         'isbn' => $faker->isbn13,
         'summary' => $faker->words(10, true),
     ];
@@ -28,8 +28,8 @@ for ($i = 0; $i < 15; $i++) {
 <body>
     <div class="container mt-5">
         <h1 class="mb-4">Fake Book Records</h1>
-        <table class="table table-striped table-bordered">
-            <thead class="thead-dark">
+        <table class="table table-bordered">
+            <thead class="thead-light">
                 <tr>
                     <th>Title</th>
                     <th>Author</th>
