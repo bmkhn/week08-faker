@@ -29,8 +29,8 @@ for ($i = 0; $i < 10; $i++) {
 <body>
     <div class="container mt-5">
         <h1 class="mb-4">Fake User Accounts</h1>
-        <table class="table table-striped table-bordered">
-            <thead class="thead-dark">
+        <table class="table table-bordered">
+            <thead class="thead-light">
                 <tr>
                     <th>User ID</th>
                     <th>Full Name</th>
