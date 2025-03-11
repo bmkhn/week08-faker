@@ -9,7 +9,7 @@ for ($i = 0; $i < 5; $i++) {
     $profiles[] = [
         'full_name' => $faker->name,
         'email' => $faker->email,
-        'phone' => $faker->phoneNumber,
+        'phone' => $faker->numerify('+63 9## ### ####'),
         'address' => $faker->municipality . ', ' . $faker->province,
         'birthdate' => $faker->date('Y-m-d'),
         'job_title' => $jobTitles[array_rand($jobTitles)],
@@ -28,8 +28,8 @@ for ($i = 0; $i < 5; $i++) {
 <body>
     <div class="container mt-5">
         <h1 class="mb-4">Fake User Profiles</h1>
-        <table class="table table-striped table-bordered">
-            <thead class="thead-dark">
+        <table class="table table-bordered">
+            <thead class="thead-light">
                 <tr>
                     <th>Full Name</th>
                     <th>Email Address</th>
